@@ -7,7 +7,5 @@ import java.util.List;
 
 @Repository
 public interface VillageRepository extends MongoRepository<Village, String> {
-
     List<Village> findByPlayerId(String playerId);
-
 }

@@ -9,10 +9,10 @@ public class Building {
     @Id
     private String id;
     private BuildingType type;
-    private String currentAmount;
+    private Integer currentAmount;
     public Building() {}
 
-    public Building(BuildingType type, String currentAmount) {
+    public Building(BuildingType type, Integer currentAmount) {
         this.type = type;
         this.currentAmount = currentAmount;
     }
@@ -23,7 +23,7 @@ public class Building {
     public BuildingType getType() { return type; }
     public void setType(BuildingType type) { this.type = type; }
 
-    public String getCurrentAmount() { return currentAmount; }
-    public void setCurrentAmount(String currentAmount) { this.currentAmount = currentAmount; }
+    public Integer getCurrentAmount() { return currentAmount; }
+    public void setCurrentAmount(Integer currentAmount) { this.currentAmount = currentAmount; }
 
 }

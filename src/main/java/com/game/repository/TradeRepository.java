@@ -7,13 +7,6 @@ import java.util.List;
 
 @Repository
 public interface TradeRepository extends MongoRepository<Trade, String> {
-    
-    // Znajdź transakcje wysłane przez gracza
     List<Trade> findByFromPlayerId(String fromPlayerId);
-    
-    // Znajdź transakcje otrzymane przez gracza
     List<Trade> findByToPlayerId(String toPlayerId);
-    
-    // Znajdź transakcje według statusu
-    List<Trade> findByStatus(String status);
 }

@@ -25,7 +25,7 @@ public class EventLogController {
 
     @GetMapping("/attack/{playerId}")
     public List<EventLog> getLogsByPlayer(@PathVariable String playerId) {
-        return eventLogService.getLogsByPlayer(playerId);
+        return eventLogService.getPlayerLogs(playerId);
     }
 
     @GetMapping("/attack/{attackId}")

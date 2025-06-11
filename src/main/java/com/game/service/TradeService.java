@@ -1,5 +1,6 @@
 package com.game.service;
 
+import com.game.model.Player;
 import com.game.model.Trade;
 import com.game.model.Village;
 import com.game.repository.TradeRepository;
@@ -14,7 +15,7 @@ public class TradeService {
     private TradeRepository tradeRepository;
 
     @Autowired
-    private VillageService villageService;
+    private PlayerService playerService;
 
     @Autowired
     private EventLogService eventLogService;
@@ -45,35 +46,33 @@ public class TradeService {
     public Trade acceptTrade(String tradeId) {
         Trade trade = tradeRepository.findById(tradeId).orElse(null);
         if (trade != null && "PENDING".equals(trade.getStatus())) {
-            List<Village> fromVillages = villageService.getVillagesByPlayerId(trade.getFromPlayerId());
-            List<Village> toVillages = villageService.getVillagesByPlayerId(trade.getToPlayerId());
+            Player fromPlayer = playerService.getPlayerById(trade.getFromPlayerId());
+            Player toPlayer = playerService.getPlayerById(trade.getToPlayerId());
 
-            if (!fromVillages.isEmpty() && !toVillages.isEmpty()) {
-                Village fromVillage = fromVillages.get(0);
-                Village toVillage = toVillages.get(0);
+            if (fromPlayer != null && toPlayer != null) {
 
                 switch (trade.getResourceType()) {
                     case "wood":
-                        villageService.updateVillageResources(fromVillage.getId(), -trade.getAmount(), null, null);
-                        villageService.updateVillageResources(toVillage.getId(), trade.getAmount(), null, null);
+                        fromPlayer.setWood(fromPlayer.getWood() - trade.getAmount());
+                        toPlayer.setWood(toPlayer.getWood() + trade.getAmount());
                         break;
                     case "stone":
-                        villageService.updateVillageResources(fromVillage.getId(), null, -trade.getAmount(), null);
-                        villageService.updateVillageResources(toVillage.getId(), null, trade.getAmount(), null);
+                        fromPlayer.setStone(fromPlayer.getStone() - trade.getAmount());
+                        toPlayer.setStone(toPlayer.getStone() + trade.getAmount());
                         break;
                     case "food":
-                        villageService.updateVillageResources(fromVillage.getId(), null, null, -trade.getAmount());
-                        villageService.updateVillageResources(toVillage.getId(), null, null, trade.getAmount());
+                        fromPlayer.setFood(fromPlayer.getFood() - trade.getAmount());
+                        toPlayer.setFood(toPlayer.getFood() + trade.getAmount());
                         break;
                 }
 
                 trade.setStatus("COMPLETED");
                 Trade completedTrade = tradeRepository.save(trade);
 
-                String message = String.format("Transakcja zakończona między graczami %s i %s", 
-                                             trade.getFromPlayerId(), trade.getToPlayerId());
-                String details = String.format("Typ surowca: %s, ilość: %d, status: %s", 
-                                             trade.getResourceType(), trade.getAmount(), "COMPLETED");
+                String message = String.format("Transakcja zakończona między graczami %s i %s",
+                        trade.getFromPlayerId(), trade.getToPlayerId());
+                String details = String.format("Typ surowca: %s, ilość: %d, status: %s",
+                        trade.getResourceType(), trade.getAmount(), "COMPLETED");
                 eventLogService.addTradeLog(message, details);
 
                 return completedTrade;

@@ -40,12 +40,8 @@ public class Village {
     public Integer getWarriors() { return warriors; }
     public void setWarriors(Integer warriors) { this.warriors = warriors; }
 
-    public void setBuildings(List<Building> buildings) {
-        this.buildings = buildings;
-    }
-
-    public void addBuilding(Building building) {
-        this.buildings.add(building);
-    }
+    public List<Building> getBuildings() { return buildings;}
+    public void setBuildings(List<Building> buildings) { this.buildings = buildings; }
+    public void addBuilding(Building building) { this.buildings.add(building); }
 
 }

@@ -12,15 +12,15 @@ public class EventLogService {
     @Autowired
     private EventLogRepository eventLogRepository;
 
-    public EventLog addAttackLog(String attackId, String attackerPlayerId, String defenderPlayerId,
-                                 String message, String details) {
+    public void addAttackLog(String attackId, String attackerPlayerId, String defenderPlayerId,
+                             String message, String details) {
         EventLog log = new EventLog(attackId, attackerPlayerId, defenderPlayerId, "ATTACK", message, details);
-        return eventLogRepository.save(log);
+        eventLogRepository.save(log);
     }
 
-    public EventLog addTradeLog(String message, String details) {
+    public void addTradeLog(String message, String details) {
         EventLog log = new EventLog("TRADE", message, details);
-        return eventLogRepository.save(log);
+        eventLogRepository.save(log);
     }
 
     public List<EventLog> getAllLogs() {
@@ -31,12 +31,11 @@ public class EventLogService {
         return eventLogRepository.findByLogType(logType);
     }
 
-    public List<EventLog> getLogsByAttacker(String playerId) {
-        return eventLogRepository.findByAttackerPlayerId(playerId);
-    }
+    public List<EventLog> getPlayerLogs(String playerId) {
+        List<EventLog> logs = eventLogRepository.findByAttackerPlayerId(playerId);
+        logs.addAll(eventLogRepository.findByDefenderPlayerId(playerId));
+        return logs;
 
-    public List<EventLog> getLogsByDefender(String playerId) {
-        return eventLogRepository.findByDefenderPlayerId(playerId);
     }
 
     public List<EventLog> getLogsByAttackId(String attackId) {

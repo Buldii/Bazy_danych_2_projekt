@@ -1,5 +1,7 @@
 package com.game.service;
 
+import com.game.model.Building;
+import com.game.model.BuildingType;
 import com.game.model.Player;
 import com.game.model.Village;
 import com.game.repository.VillageRepository;
@@ -74,4 +76,57 @@ public class VillageService {
         }
         return null;
     }
+    
+    public Integer getBuildingsDefensePower(String villageId)
+    {
+        Village village = villageRepository.findById(villageId).orElse(null);
+        if (village != null)
+        {
+            List<Building> buildings =  village.getBuildings();
+            int totalDefensePower = 0;
+
+            for (Building building : buildings) {
+                totalDefensePower += building.getType().getDefensePoints() * building.getCurrentAmount();
+            }
+
+            totalDefensePower += village.getPopulation() + (village.getWarriors() * 2);
+            return totalDefensePower;
+        }
+        return null;
+    }
+
+
+    public Village buildBuilding(String villageId, Integer amount, BuildingType type) {
+        Village village = villageRepository.findById(villageId).orElse(null);
+        Player player;
+        if (village != null) {
+            player = playerService.getPlayerById(village.getPlayerId());
+            if (player != null) {
+                int woodCost = type.getWoodCost() * amount;
+                int stoneCost = type.getStoneCost() * amount;
+                int foodCost = type.getFoodCost() * amount;
+
+                if (player.getWood() < woodCost || player.getStone() < stoneCost || player.getFood() < foodCost) {
+                    return null;
+                }
+
+                Building building = village.getBuildings().stream()
+                        .filter(b -> b.getType() == type)
+                        .findFirst()
+                        .orElse(new Building(type, 0));
+
+                building.setCurrentAmount(building.getCurrentAmount() + amount);
+                if (!village.getBuildings().contains(building)) {
+                    village.getBuildings().add(building);
+                }
+
+                player.setWood(player.getWood() - woodCost);
+                player.setStone(player.getStone() - stoneCost);
+
+                return villageRepository.save(village);
+            }
+        }
+        return null;
+    }
+
 }
