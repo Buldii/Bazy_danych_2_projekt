@@ -243,7 +243,7 @@ Struktura kolekcji:
 | attackId | String | ID ataku (referencja do Attack) |
 | attackerPlayerId | String | ID atakującego gracza (referencja do Player) |
 | defenderPlayerId | String | ID broniącego się gracza (referencja do Player) |
-| logType | String | Typ logu (ATTACK, TRADE, VILLAGE_CREATE) |
+| logType | String | Typ logu (ATTACK, TRADE) |
 | message | String | Wiadomość logu |
 | details | String | Szczegóły zdarzenia |
 | createdAt | LocalDateTime | Data i czas zdarzenia |
