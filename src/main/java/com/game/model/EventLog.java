@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
 @Document(collection = "battle_logs")
-public class BattleLog {
+public class EventLog {
 
     @Id
     private String id;
@@ -17,13 +17,12 @@ public class BattleLog {
     private String details;
     private LocalDateTime createdAt;
 
-    // Konstruktory
-    public BattleLog() {
+    public EventLog() {
         this.createdAt = LocalDateTime.now();
     }
 
-    public BattleLog(String attackId, String attackerPlayerId, String defenderPlayerId, 
-                     String logType, String message, String details) {
+    public EventLog(String attackId, String attackerPlayerId, String defenderPlayerId,
+                    String logType, String message, String details) {
         this.attackId = attackId;
         this.attackerPlayerId = attackerPlayerId;
         this.defenderPlayerId = defenderPlayerId;
@@ -33,15 +32,13 @@ public class BattleLog {
         this.createdAt = LocalDateTime.now();
     }
 
-    // Konstruktor dla logów handlu
-    public BattleLog(String logType, String message, String details) {
+    public EventLog(String logType, String message, String details) {
         this.logType = logType;
         this.message = message;
         this.details = details;
         this.createdAt = LocalDateTime.now();
     }
 
-    // Gettery i settery
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 

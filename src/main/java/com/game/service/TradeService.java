@@ -17,28 +17,24 @@ public class TradeService {
     private VillageService villageService;
 
     @Autowired
-    private BattleLogService battleLogService;
+    private EventLogService eventLogService;
 
-    // Utwórz nową transakcję
     public Trade createTrade(String fromPlayerId, String toPlayerId, String resourceType, Integer amount) {
         Trade trade = new Trade(fromPlayerId, toPlayerId, resourceType, amount);
         Trade savedTrade = tradeRepository.save(trade);
 
-        // Dodaj log transakcji
         String message = String.format("Nowa oferta handlowa od gracza %s do gracza %s", fromPlayerId, toPlayerId);
         String details = String.format("Typ surowca: %s, ilość: %d, status: %s", 
                                      resourceType, amount, savedTrade.getStatus());
-        battleLogService.addTradeLog(message, details);
+        eventLogService.addTradeLog(message, details);
 
         return savedTrade;
     }
 
-    // Znajdź wszystkie transakcje
     public List<Trade> getAllTrades() {
         return tradeRepository.findAll();
     }
 
-    // Znajdź transakcje gracza
     public List<Trade> getTradesByPlayerId(String playerId) {
         List<Trade> sentTrades = tradeRepository.findByFromPlayerId(playerId);
         List<Trade> receivedTrades = tradeRepository.findByToPlayerId(playerId);
@@ -46,11 +42,9 @@ public class TradeService {
         return sentTrades;
     }
 
-    // Zaakceptuj transakcję
     public Trade acceptTrade(String tradeId) {
         Trade trade = tradeRepository.findById(tradeId).orElse(null);
         if (trade != null && "PENDING".equals(trade.getStatus())) {
-            // Prosta logika wymiany zasobów
             List<Village> fromVillages = villageService.getVillagesByPlayerId(trade.getFromPlayerId());
             List<Village> toVillages = villageService.getVillagesByPlayerId(trade.getToPlayerId());
 
@@ -58,7 +52,6 @@ public class TradeService {
                 Village fromVillage = fromVillages.get(0);
                 Village toVillage = toVillages.get(0);
 
-                // Odejmij zasoby od nadawcy
                 switch (trade.getResourceType()) {
                     case "wood":
                         villageService.updateVillageResources(fromVillage.getId(), -trade.getAmount(), null, null);
@@ -77,12 +70,11 @@ public class TradeService {
                 trade.setStatus("COMPLETED");
                 Trade completedTrade = tradeRepository.save(trade);
 
-                // Dodaj log zakończonej transakcji
                 String message = String.format("Transakcja zakończona między graczami %s i %s", 
                                              trade.getFromPlayerId(), trade.getToPlayerId());
                 String details = String.format("Typ surowca: %s, ilość: %d, status: %s", 
                                              trade.getResourceType(), trade.getAmount(), "COMPLETED");
-                battleLogService.addTradeLog(message, details);
+                eventLogService.addTradeLog(message, details);
 
                 return completedTrade;
             }
@@ -90,19 +82,17 @@ public class TradeService {
         return trade;
     }
 
-    // Odrzuć transakcję
     public Trade rejectTrade(String tradeId) {
         Trade trade = tradeRepository.findById(tradeId).orElse(null);
         if (trade != null && "PENDING".equals(trade.getStatus())) {
             trade.setStatus("CANCELLED");
             Trade rejectedTrade = tradeRepository.save(trade);
 
-            // Dodaj log odrzuconej transakcji
             String message = String.format("Transakcja odrzucona między graczami %s i %s", 
                                          trade.getFromPlayerId(), trade.getToPlayerId());
             String details = String.format("Typ surowca: %s, ilość: %d, status: %s", 
                                          trade.getResourceType(), trade.getAmount(), "CANCELLED");
-            battleLogService.addTradeLog(message, details);
+            eventLogService.addTradeLog(message, details);
 
             return rejectedTrade;
         }

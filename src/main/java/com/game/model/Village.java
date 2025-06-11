@@ -3,6 +3,9 @@ package com.game.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Document(collection = "villages")
 public class Village {
     
@@ -10,24 +13,18 @@ public class Village {
     private String id;
     private String name;
     private String playerId;
-    private Integer wood = 100;
-    private Integer stone = 100;
-    private Integer food = 100;
     private Integer population = 0;
-    
-    // Konstruktory
+    private Integer warriors = 0;
+    private List<Building> buildings = new ArrayList<>();
+
     public Village() {}
     
     public Village(String name, String playerId) {
         this.name = name;
         this.playerId = playerId;
-        this.wood = 100;
-        this.stone = 100;
-        this.food = 100;
         this.population = 0;
     }
-    
-    // Gettery i settery
+
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
     
@@ -37,15 +34,18 @@ public class Village {
     public String getPlayerId() { return playerId; }
     public void setPlayerId(String playerId) { this.playerId = playerId; }
     
-    public Integer getWood() { return wood; }
-    public void setWood(Integer wood) { this.wood = wood; }
-    
-    public Integer getStone() { return stone; }
-    public void setStone(Integer stone) { this.stone = stone; }
-    
-    public Integer getFood() { return food; }
-    public void setFood(Integer food) { this.food = food; }
-    
     public Integer getPopulation() { return population; }
     public void setPopulation(Integer population) { this.population = population; }
+
+    public Integer getWarriors() { return warriors; }
+    public void setWarriors(Integer warriors) { this.warriors = warriors; }
+
+    public void setBuildings(List<Building> buildings) {
+        this.buildings = buildings;
+    }
+
+    public void addBuilding(Building building) {
+        this.buildings.add(building);
+    }
+
 }

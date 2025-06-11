@@ -1,6 +1,7 @@
 package com.game.service;
 
 import com.game.model.Player;
+import com.game.model.Village;
 import com.game.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,33 +12,39 @@ public class PlayerService {
     
     @Autowired
     private PlayerRepository playerRepository;
-    
-    // Utwórz nowego gracza
+
     public Player createPlayer(String username, String email) {
         Player player = new Player(username, email);
         return playerRepository.save(player);
     }
-    
-    // Znajdź wszystkich graczy
+
     public List<Player> getAllPlayers() {
         return playerRepository.findAll();
     }
-    
-    // Znajdź gracza po ID
+
     public Player getPlayerById(String id) {
         return playerRepository.findById(id).orElse(null);
     }
-    
-    // Znajdź gracza po nazwie użytkownika
+
     public Player getPlayerByUsername(String username) {
         return playerRepository.findByUsername(username);
     }
-    
-    // Zaktualizuj punkty gracza
-    public Player updatePlayerPoints(String playerId, Integer points) {
+
+    public Player updatePlayerResources(String playerId, Integer wood, Integer stone, Integer food) {
         Player player = playerRepository.findById(playerId).orElse(null);
         if (player != null) {
-            player.setPoints(player.getPoints() + points);
+            if (wood != null) player.setWood(player.getWood() + wood);
+            if (stone != null) player.setStone(player.getStone() + stone);
+            if (food != null) player.setFood(player.getFood() + food);
+            return playerRepository.save(player);
+        }
+        return null;
+    }
+
+    public Player updatePlayerExperience(String playerId, Integer experience) {
+        Player player = playerRepository.findById(playerId).orElse(null);
+        if (player != null) {
+            player.setExperience(player.getExperience() + experience);
             return playerRepository.save(player);
         }
         return null;

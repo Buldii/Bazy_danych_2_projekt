@@ -15,8 +15,7 @@ public class Trade {
     private Integer amount;
     private String status = "PENDING"; // "PENDING", "COMPLETED", "CANCELLED"
     private LocalDateTime createdAt;
-    
-    // Konstruktory
+
     public Trade() {
         this.createdAt = LocalDateTime.now();
     }
@@ -29,8 +28,7 @@ public class Trade {
         this.status = "PENDING";
         this.createdAt = LocalDateTime.now();
     }
-    
-    // Gettery i settery
+
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
     

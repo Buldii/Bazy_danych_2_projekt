@@ -16,13 +16,8 @@ public class Attack {
     private Integer attackPower;
     private Integer defensePower;
     private String winner; // "ATTACKER", "DEFENDER"
-    private Integer stolenWood = 0;
-    private Integer stolenStone = 0;
-    private Integer stolenFood = 0;
-    private String status = "COMPLETED"; // "COMPLETED"
     private LocalDateTime createdAt;
 
-    // Konstruktory
     public Attack() {
         this.createdAt = LocalDateTime.now();
     }
@@ -35,11 +30,9 @@ public class Attack {
         this.attackerVillageId = attackerVillageId;
         this.defenderVillageId = defenderVillageId;
         this.attackPower = attackPower;
-        this.status = "COMPLETED";
         this.createdAt = LocalDateTime.now();
     }
 
-    // Gettery i settery
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
@@ -64,18 +57,7 @@ public class Attack {
     public String getWinner() { return winner; }
     public void setWinner(String winner) { this.winner = winner; }
 
-    public Integer getStolenWood() { return stolenWood; }
-    public void setStolenWood(Integer stolenWood) { this.stolenWood = stolenWood; }
-
-    public Integer getStolenStone() { return stolenStone; }
-    public void setStolenStone(Integer stolenStone) { this.stolenStone = stolenStone; }
-
-    public Integer getStolenFood() { return stolenFood; }
-    public void setStolenFood(Integer stolenFood) { this.stolenFood = stolenFood; }
-
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
 }

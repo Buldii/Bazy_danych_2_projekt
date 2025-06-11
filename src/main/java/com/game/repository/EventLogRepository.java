@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BattleLogRepository extends MongoRepository<EventLog, String> {
+public interface EventLogRepository extends MongoRepository<EventLog, String> {
 
     // Znajdź logi gracza (jako atakujący)
     List<EventLog> findByAttackerPlayerId(String playerId);

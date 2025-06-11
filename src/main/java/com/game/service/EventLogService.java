@@ -1,52 +1,45 @@
 package com.game.service;
 
-import com.game.model.BattleLog;
-import com.game.repository.BattleLogRepository;
+import com.game.model.EventLog;
+import com.game.repository.EventLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class BattleLogService {
+public class EventLogService {
 
     @Autowired
-    private BattleLogRepository battleLogRepository;
+    private EventLogRepository eventLogRepository;
 
-    // Dodaj log ataku
-    public BattleLog addAttackLog(String attackId, String attackerPlayerId, String defenderPlayerId, 
+    public EventLog addAttackLog(String attackId, String attackerPlayerId, String defenderPlayerId,
                                  String message, String details) {
-        BattleLog log = new BattleLog(attackId, attackerPlayerId, defenderPlayerId, "ATTACK", message, details);
-        return battleLogRepository.save(log);
+        EventLog log = new EventLog(attackId, attackerPlayerId, defenderPlayerId, "ATTACK", message, details);
+        return eventLogRepository.save(log);
     }
 
-    // Dodaj log handlu
-    public BattleLog addTradeLog(String message, String details) {
-        BattleLog log = new BattleLog("TRADE", message, details);
-        return battleLogRepository.save(log);
+    public EventLog addTradeLog(String message, String details) {
+        EventLog log = new EventLog("TRADE", message, details);
+        return eventLogRepository.save(log);
     }
 
-    // Pobierz wszystkie logi
-    public List<BattleLog> getAllLogs() {
-        return battleLogRepository.findAll();
+    public List<EventLog> getAllLogs() {
+        return eventLogRepository.findAll();
     }
 
-    // Pobierz logi według typu
-    public List<BattleLog> getLogsByType(String logType) {
-        return battleLogRepository.findByLogType(logType);
+    public List<EventLog> getLogsByType(String logType) {
+        return eventLogRepository.findByLogType(logType);
     }
 
-    // Pobierz logi gracza (jako atakujący)
-    public List<BattleLog> getLogsByAttacker(String playerId) {
-        return battleLogRepository.findByAttackerPlayerId(playerId);
+    public List<EventLog> getLogsByAttacker(String playerId) {
+        return eventLogRepository.findByAttackerPlayerId(playerId);
     }
 
-    // Pobierz logi gracza (jako broniący)
-    public List<BattleLog> getLogsByDefender(String playerId) {
-        return battleLogRepository.findByDefenderPlayerId(playerId);
+    public List<EventLog> getLogsByDefender(String playerId) {
+        return eventLogRepository.findByDefenderPlayerId(playerId);
     }
 
-    // Pobierz logi dla konkretnego ataku
-    public List<BattleLog> getLogsByAttackId(String attackId) {
-        return battleLogRepository.findByAttackId(attackId);
+    public List<EventLog> getLogsByAttackId(String attackId) {
+        return eventLogRepository.findByAttackId(attackId);
     }
 }

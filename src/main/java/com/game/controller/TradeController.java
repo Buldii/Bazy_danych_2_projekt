@@ -12,20 +12,17 @@ public class TradeController {
     
     @Autowired
     private TradeService tradeService;
-    
-    // Pobierz wszystkie transakcje
+
     @GetMapping
     public List<Trade> getAllTrades() {
         return tradeService.getAllTrades();
     }
-    
-    // Pobierz transakcje gracza
+
     @GetMapping("/player/{playerId}")
     public List<Trade> getTradesByPlayerId(@PathVariable String playerId) {
         return tradeService.getTradesByPlayerId(playerId);
     }
-    
-    // Utwórz nową transakcję
+
     @PostMapping
     public Trade createTrade(@RequestParam String fromPlayerId,
                            @RequestParam String toPlayerId,
@@ -33,14 +30,12 @@ public class TradeController {
                            @RequestParam Integer amount) {
         return tradeService.createTrade(fromPlayerId, toPlayerId, resourceType, amount);
     }
-    
-    // Zaakceptuj transakcję
+
     @PutMapping("/{id}/accept")
     public Trade acceptTrade(@PathVariable String id) {
         return tradeService.acceptTrade(id);
     }
-    
-    // Odrzuć transakcję
+
     @PutMapping("/{id}/reject")
     public Trade rejectTrade(@PathVariable String id) {
         return tradeService.rejectTrade(id);

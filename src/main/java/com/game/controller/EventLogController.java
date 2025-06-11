@@ -1,45 +1,35 @@
 package com.game.controller;
 
-import com.game.model.BattleLog;
-import com.game.service.BattleLogService;
+import com.game.model.EventLog;
+import com.game.service.EventLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/logs")
-public class BattleLogController {
+public class EventLogController {
 
     @Autowired
-    private BattleLogService battleLogService;
+    private EventLogService eventLogService;
 
-    // Pobierz wszystkie logi
     @GetMapping
-    public List<BattleLog> getAllLogs() {
-        return battleLogService.getAllLogs();
+    public List<EventLog> getAllLogs() {
+        return eventLogService.getAllLogs();
     }
 
-    // Pobierz logi według typu
     @GetMapping("/type/{logType}")
-    public List<BattleLog> getLogsByType(@PathVariable String logType) {
-        return battleLogService.getLogsByType(logType);
+    public List<EventLog> getLogsByType(@PathVariable String logType) {
+        return eventLogService.getLogsByType(logType);
     }
 
-    // Pobierz logi gracza (jako atakujący)
-    @GetMapping("/attacker/{playerId}")
-    public List<BattleLog> getLogsByAttacker(@PathVariable String playerId) {
-        return battleLogService.getLogsByAttacker(playerId);
+    @GetMapping("/attack/{playerId}")
+    public List<EventLog> getLogsByPlayer(@PathVariable String playerId) {
+        return eventLogService.getLogsByPlayer(playerId);
     }
 
-    // Pobierz logi gracza (jako broniący)
-    @GetMapping("/defender/{playerId}")
-    public List<BattleLog> getLogsByDefender(@PathVariable String playerId) {
-        return battleLogService.getLogsByDefender(playerId);
-    }
-
-    // Pobierz logi dla konkretnego ataku
     @GetMapping("/attack/{attackId}")
-    public List<BattleLog> getLogsByAttackId(@PathVariable String attackId) {
-        return battleLogService.getLogsByAttackId(attackId);
+    public List<EventLog> getLogsByAttackId(@PathVariable String attackId) {
+        return eventLogService.getLogsByAttackId(attackId);
     }
 }

@@ -13,37 +13,26 @@ public class AttackController {
     @Autowired
     private AttackService attackService;
 
-    // Pobierz wszystkie ataki
     @GetMapping
     public List<Attack> getAllAttacks() {
         return attackService.getAllAttacks();
     }
 
-    // Pobierz atak po ID
     @GetMapping("/{id}")
     public Attack getAttackById(@PathVariable String id) {
         return attackService.getAttackById(id);
     }
 
-    // Pobierz ataki gracza (jako atakujący)
-    @GetMapping("/attacker/{playerId}")
-    public List<Attack> getAttacksByAttacker(@PathVariable String playerId) {
-        return attackService.getAttacksByAttacker(playerId);
+    @GetMapping("/{playerId}")
+    public List<Attack> getAttacksByPlayer(@PathVariable String playerId) {
+        return attackService.getAttacksByPlayer(playerId);
     }
 
-    // Pobierz ataki na gracza (jako broniący)
-    @GetMapping("/defender/{playerId}")
-    public List<Attack> getAttacksByDefender(@PathVariable String playerId) {
-        return attackService.getAttacksByDefender(playerId);
-    }
-
-    // Pobierz ataki związane z wioską
     @GetMapping("/village/{villageId}")
     public List<Attack> getAttacksByVillage(@PathVariable String villageId) {
         return attackService.getAttacksByVillage(villageId);
     }
 
-    // Przeprowadź atak
     @PostMapping
     public Attack attackVillage(@RequestParam String attackerPlayerId,
                                @RequestParam String defenderPlayerId,

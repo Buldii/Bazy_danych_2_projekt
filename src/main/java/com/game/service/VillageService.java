@@ -1,5 +1,6 @@
 package com.game.service;
 
+import com.game.model.Player;
 import com.game.model.Village;
 import com.game.repository.VillageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,46 +12,65 @@ public class VillageService {
     
     @Autowired
     private VillageRepository villageRepository;
-    
-    // Utwórz nową wioskę
+
+    @Autowired
+    private PlayerService playerService;
+
     public Village createVillage(String name, String playerId) {
         Village village = new Village(name, playerId);
         return villageRepository.save(village);
     }
-    
-    // Znajdź wszystkie wioski
+
     public List<Village> getAllVillages() {
         return villageRepository.findAll();
     }
-    
-    // Znajdź wioski gracza
+
     public List<Village> getVillagesByPlayerId(String playerId) {
         return villageRepository.findByPlayerId(playerId);
     }
-    
-    // Znajdź wioskę po ID
+
     public Village getVillageById(String id) {
         return villageRepository.findById(id).orElse(null);
     }
-    
-    // Zaktualizuj zasoby wiosek
-    public Village updateVillageResources(String villageId, Integer wood, Integer stone, Integer food) {
+
+    public Village increasePopulation(String villageId, Integer amount) {
         Village village = villageRepository.findById(villageId).orElse(null);
+        Player player;
         if (village != null) {
-            if (wood != null) village.setWood(village.getWood() + wood);
-            if (stone != null) village.setStone(village.getStone() + stone);
-            if (food != null) village.setFood(village.getFood() + food);
-            return villageRepository.save(village);
+            player = playerService.getPlayerById(village.getPlayerId());
+            if (player != null)
+            {
+                village.setPopulation(village.getPopulation() + amount);
+                player.setFood(player.getFood() - amount);
+                return villageRepository.save(village);
+            }
+
         }
         return null;
     }
-    
-    // Zwiększ populację
-    public Village increasePopulation(String villageId, Integer amount) {
+
+    public Village recruitWarriors(String villageId, Integer amount) {
         Village village = villageRepository.findById(villageId).orElse(null);
+        Player player;
         if (village != null) {
-            village.setPopulation(village.getPopulation() + amount);
-            return villageRepository.save(village);
+            if (village.getPopulation() < amount) //cant recruit that many!
+            {
+                return null;
+            }
+            player = playerService.getPlayerById(village.getPlayerId());
+            if (player != null)
+            {
+                if (player.getStone() < amount || player.getWood() < amount) //cant recruit that many!
+                {
+                    return null;
+                }
+                village.setWarriors(village.getWarriors() + amount);
+                village.setPopulation(village.getPopulation() - amount);
+                player.setFood(player.getStone() - amount);
+                player.setFood(player.getWood() - amount);
+                return villageRepository.save(village);
+            }
+
         }
         return null;
     }

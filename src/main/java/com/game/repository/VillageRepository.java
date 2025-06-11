@@ -7,7 +7,7 @@ import java.util.List;
 
 @Repository
 public interface VillageRepository extends MongoRepository<Village, String> {
-    
-    // Znajdź wszystkie wioski gracza
+
     List<Village> findByPlayerId(String playerId);
+
 }
