@@ -34,8 +34,8 @@ public class AttackService {
         Village attackerVillage = villageService.getVillageById(attackerVillageId);
         Village defenderVillage = villageService.getVillageById(defenderVillageId);
 
-        Player attackerPlayer = playerService.getPlayerById(attackerVillageId);
-        Player defenderPlayer = playerService.getPlayerById(defenderVillageId);
+        Player attackerPlayer = playerService.getPlayerById(attackerPlayerId);
+        Player defenderPlayer = playerService.getPlayerById(defenderPlayerId);
 
         if (attackerVillage == null || defenderVillage == null) {
             return null;

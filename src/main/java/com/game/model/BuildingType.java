@@ -23,4 +23,14 @@ public enum BuildingType {
     public int getStoneCost() { return stoneCost; }
     public int getFoodCost() { return foodCost; }
     public int getDefensePoints() { return defensePoints; }
+
+
+    public static BuildingType fromDisplayName(String displayName) {
+        for (BuildingType type : BuildingType.values()) {
+            if (type.displayName.equals(displayName)) {
+                return type;
+            }
+        }
+        throw new IllegalArgumentException("Unknown display name: " + displayName);
+    }
 }

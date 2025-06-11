@@ -23,7 +23,7 @@ public class AttackController {
         return attackService.getAttackById(id);
     }
 
-    @GetMapping("/{playerId}")
+    @GetMapping("/player/{playerId}")
     public List<Attack> getAttacksByPlayer(@PathVariable String playerId) {
         return attackService.getAttacksByPlayer(playerId);
     }
