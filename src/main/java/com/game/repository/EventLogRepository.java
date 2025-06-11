@@ -1,22 +1,22 @@
 package com.game.repository;
 
-import com.game.model.BattleLog;
+import com.game.model.EventLog;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BattleLogRepository extends MongoRepository<BattleLog, String> {
+public interface BattleLogRepository extends MongoRepository<EventLog, String> {
 
     // Znajdź logi gracza (jako atakujący)
-    List<BattleLog> findByAttackerPlayerId(String playerId);
+    List<EventLog> findByAttackerPlayerId(String playerId);
 
     // Znajdź logi gracza (jako broniący)
-    List<BattleLog> findByDefenderPlayerId(String playerId);
+    List<EventLog> findByDefenderPlayerId(String playerId);
 
     // Znajdź logi według typu
-    List<BattleLog> findByLogType(String logType);
+    List<EventLog> findByLogType(String logType);
 
     // Znajdź logi związane z konkretnym atakiem
-    List<BattleLog> findByAttackId(String attackId);
+    List<EventLog> findByAttackId(String attackId);
 }
